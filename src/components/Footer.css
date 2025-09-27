@@ -1,0 +1,26 @@
+/* Footer.css */
+.footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.footer a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
