@@ -11,7 +11,6 @@ function Home() {
         <li>Groceries</li>
         <li>Staples</li>
         <li>FMCG Products</li>
-        <li>Beverages</li>
       </ul>
     </div>
   );
