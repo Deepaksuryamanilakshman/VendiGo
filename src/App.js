@@ -9,6 +9,9 @@ import Login from './pages/Login';
 import FAQ from './pages/FAQ';
 import Privacy from './pages/Privacy';
 
+import Order from './supplier/order';
+import SideNav  from './supplier/sideNav';
+
 function App() {
   return (
     <Router>
@@ -21,9 +24,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/privacy" element={<Privacy />} />
+
+          {/* supplier */}
+          <Route path="/order" element={<Order />} />
+          <Route path="/sidebar" element={<SideNav />}></Route>
         </Routes>
       </div>
-      <Footer />
     </Router>
   );
 }

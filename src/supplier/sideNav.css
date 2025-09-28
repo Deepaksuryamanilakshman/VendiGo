@@ -1,0 +1,35 @@
+/* File: SideNav.css
+  Purpose: Custom styles for the Qwipo Side Navigation Bar, complementing Tailwind CSS.
+*/
+
+/* 1. Global Box-Sizing Reset for Consistency */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Custom Subtle Icon Glow on Hover (Pastel Pink Accent) */
+/* We target the div containing the icon when the main item is hovered.
+   The 'text-pink-700' on the active state is what we want to "glow."
+*/
+.nav-item-glow:hover svg {
+  /* Apply a drop shadow (glow) to the icon */
+  filter: drop-shadow(0 0 4px rgba(236, 72, 153, 0.5)); /* Pink glow (ec4899 is pink-600) */
+  transform: scale(1.05); /* Subtle scale-up for extra interactivity */
+  transition: all 0.2s ease-in-out;
+}
+
+/* 3. Ensure the main container's shadow looks crisp (optional, often handled by Tailwind's shadow-xl) */
+.sidebar-shadow {
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.08);
+}
+
+/* 4. Custom CSS for the fixed collapse state on small screens 
+   (Optional: Tailwind handles most of the collapse, but this can ensure max z-index)
+*/
+@media (max-width: 1023px) {
+  .fixed-sidebar-mobile {
+    z-index: 50; /* Ensure it stays above main content */
+  }
+}

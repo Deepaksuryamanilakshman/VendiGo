@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwipo - Earnings & Reports Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .kpi-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 50%, rgba(241, 245, 249, 0.85) 100%);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(203, 213, 225, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .kpi-card:hover::before {
+            left: 100%;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(59, 130, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 0.95) 50%, rgba(241, 245, 249, 0.9) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .sparkline {
+            width: 60px;
+            height: 20px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #3b82f6 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #6d28d9 0%, #9333ea 50%, #2563eb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.4);
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .status-badge {
+            transition: all 0.2s ease;
+        }
+        
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Notification -->
+    <div id="toast" class="toast glass-card rounded-lg p-4 text-white bg-gradient-to-r from-pink-500 to-rose-500">
+        <div class="flex items-center">
+            <div class="w-6 h-6 mr-3">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+            </div>
+            <span id="toast-message">Action completed successfully!</span>
+        </div>
+    </div>
+
+    <div class="min-h-screen p-4 lg:p-6">
+        <!-- Header Section -->
+        <header class="glass-card rounded-2xl p-6 mb-6 animate-fade-in">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Earnings & Reports</h1>
+                    <p class="text-gray-600">Track your Qwipo store performance</p>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <!-- Quick Filters -->
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="setDateFilter('today')" class="date-filter px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm font-medium transition-all hover:from-blue-600 hover:to-purple-600 shadow-lg">Today</button>
+                        <button onclick="setDateFilter('7d')" class="date-filter px-4 py-2 rounded-lg bg-white/80 text-gray-700 text-sm font-medium transition-all hover:bg-white border border-gray-200">7d</button>
+                        <button onclick="setDateFilter('30d')" class="date-filter px-4 py-2 rounded-lg bg-white/80 text-gray-700 text-sm font-medium transition-all hover:bg-white border border-gray-200">30d</button>
+                        <button onclick="setDateFilter('custom')" class="date-filter px-4 py-2 rounded-lg bg-white/80 text-gray-700 text-sm font-medium transition-all hover:bg-white border border-gray-200">Custom</button>
+                    </div>
+                    
+                    <!-- Category Filter -->
+                    <select class="px-4 py-2 rounded-lg bg-white/80 border border-gray-200 text-gray-700 text-sm backdrop-blur-sm">
+                        <option>All Categories</option>
+                        <option>Electronics</option>
+                        <option>Fashion</option>
+                        <option>Home & Garden</option>
+                        <option>Sports</option>
+                    </select>
+                    
+                    <!-- User Avatar -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold shadow-lg">
+                            A
+                        </div>
+                        <div class="hidden sm:block">
+                            <p class="text-sm font-medium text-gray-800">Admin User</p>
+                            <p class="text-xs text-gray-600">Store Manager</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="kpi-card rounded-2xl p-6 animate-slide-up">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-600">Today's Earnings</h3>
+                    <canvas class="sparkline" id="sparkline1"></canvas>
+                </div>
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-2xl font-bold text-gray-800">₹24,580</p>
+                        <p class="text-sm text-emerald-600 font-medium">+12.5% ↗</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="kpi-card rounded-2xl p-6 animate-slide-up" style="animation-delay: 0.1s">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-600">Monthly Earnings</h3>
+                    <canvas class="sparkline" id="sparkline2"></canvas>
+                </div>
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-2xl font-bold text-gray-800">₹7,42,350</p>
+                        <p class="text-sm text-emerald-600 font-medium">+8.3% ↗</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="kpi-card rounded-2xl p-6 animate-slide-up" style="animation-delay: 0.2s">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-600">Average Order Value</h3>
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 flex items-center justify-center border border-blue-300">
+                        <span class="text-blue-600 text-sm">₹</span>
+                    </div>
+                </div>
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-2xl font-bold text-gray-800">₹1,245</p>
+                        <p class="text-sm text-red-600 font-medium">-2.1% ↘</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+            <!-- Main Dashboard -->
+            <div class="xl:col-span-3 space-y-6">
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Sales Line Chart -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Sales Trend</h3>
+                        <div class="chart-container">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Category Bar Chart -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Top Categories</h3>
+                        <div class="chart-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Methods & Product Performance -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Payment Method Donut -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Payment Methods</h3>
+                        <div class="chart-container">
+                            <canvas id="paymentChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Top Products -->
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Top Selling Products</h3>
+                        <div class="space-y-3">
+                            <div class="product-card flex items-center gap-3 p-3 rounded-lg bg-white/60 hover:bg-white/80 border border-gray-200">
+                                <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold">
+                                    📱
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-800">iPhone 15 Pro</p>
+                                    <p class="text-sm text-gray-600">₹89,999 • 24 sold</p>
+                                </div>
+                                <button class="text-purple-600 hover:text-purple-700 text-sm font-medium">View</button>
+                            </div>
+                            
+                            <div class="product-card flex items-center gap-3 p-3 rounded-lg bg-white/60 hover:bg-white/80 border border-gray-200">
+                                <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold">
+                                    👕
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-800">Premium T-Shirt</p>
+                                    <p class="text-sm text-gray-600">₹1,299 • 156 sold</p>
+                                </div>
+                                <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">View</button>
+                            </div>
+                            
+                            <div class="product-card flex items-center gap-3 p-3 rounded-lg bg-white/60 hover:bg-white/80 border border-gray-200">
+                                <div class="w-12 h-12 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-center text-white font-bold">
+                                    🎧
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-800">Wireless Headphones</p>
+                                    <p class="text-sm text-gray-600">₹4,999 • 89 sold</p>
+                                </div>
+                                <button class="text-emerald-600 hover:text-emerald-700 text-sm font-medium">View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Transactions -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800">Recent Transactions</h3>
+                        <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All</button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-left py-3 px-2 text-sm font-medium text-gray-600">Order ID</th>
+                                    <th class="text-left py-3 px-2 text-sm font-medium text-gray-600">Customer</th>
+                                    <th class="text-left py-3 px-2 text-sm font-medium text-gray-600">Date</th>
+                                    <th class="text-left py-3 px-2 text-sm font-medium text-gray-600">Amount</th>
+                                    <th class="text-left py-3 px-2 text-sm font-medium text-gray-600">Status</th>
+                                    <th class="text-left py-3 px-2 text-sm font-medium text-gray-600">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-2 text-sm font-medium text-gray-800">#QW001</td>
+                                    <td class="py-3 px-2 text-sm text-gray-700">Rahul Sharma</td>
+                                    <td class="py-3 px-2 text-sm text-gray-600">Dec 15, 2024</td>
+                                    <td class="py-3 px-2 text-sm font-medium text-gray-800">₹2,499</td>
+                                    <td class="py-3 px-2">
+                                        <span class="status-badge px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">Completed</span>
+                                    </td>
+                                    <td class="py-3 px-2">
+                                        <button class="text-blue-600 hover:text-blue-700 text-sm">View</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-2 text-sm font-medium text-gray-800">#QW002</td>
+                                    <td class="py-3 px-2 text-sm text-gray-700">Priya Patel</td>
+                                    <td class="py-3 px-2 text-sm text-gray-600">Dec 15, 2024</td>
+                                    <td class="py-3 px-2 text-sm font-medium text-gray-800">₹1,299</td>
+                                    <td class="py-3 px-2">
+                                        <span class="status-badge px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 border border-yellow-200">Processing</span>
+                                    </td>
+                                    <td class="py-3 px-2">
+                                        <button class="text-blue-600 hover:text-blue-700 text-sm">View</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td class="py-3 px-2 text-sm font-medium text-gray-800">#QW003</td>
+                                    <td class="py-3 px-2 text-sm text-gray-700">Amit Kumar</td>
+                                    <td class="py-3 px-2 text-sm text-gray-600">Dec 14, 2024</td>
+                                    <td class="py-3 px-2 text-sm font-medium text-gray-800">₹4,999</td>
+                                    <td class="py-3 px-2">
+                                        <span class="status-badge px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200">Shipped</span>
+                                    </td>
+                                    <td class="py-3 px-2">
+                                        <button class="text-blue-600 hover:text-blue-700 text-sm">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Sidebar -->
+            <div class="space-y-6">
+                <!-- Payouts Panel -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Payouts</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Available Balance</span>
+                            <span class="font-semibold text-gray-800">₹45,230</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Pending</span>
+                            <span class="font-semibold text-yellow-600">₹12,450</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Withdrawn</span>
+                            <span class="font-semibold text-emerald-600">₹2,34,560</span>
+                        </div>
+                        <div class="pt-2 border-t border-gray-200">
+                            <p class="text-xs text-gray-600 mb-3">Next Payout: Dec 20, 2024</p>
+                            <button onclick="showToast('Payout requested successfully!')" class="btn-primary w-full py-2 px-4 rounded-lg text-white text-sm font-medium">
+                                Request Payout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alerts Section -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Alerts</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-red-50 border border-red-200">
+                            <div class="w-2 h-2 rounded-full bg-red-500 mt-2"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">Low Stock Alert</p>
+                                <p class="text-xs text-gray-600">iPhone 15 Pro - Only 3 left</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-yellow-50 border border-yellow-200">
+                            <div class="w-2 h-2 rounded-full bg-yellow-500 mt-2"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">Pending Refund</p>
+                                <p class="text-xs text-gray-600">Order #QW045 - ₹2,999</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-blue-50 border border-blue-200">
+                            <div class="w-2 h-2 rounded-full bg-blue-500 mt-2"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">New Review</p>
+                                <p class="text-xs text-gray-600">5-star rating received</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reports & Export -->
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Reports & Export</h3>
+                    <div class="space-y-3">
+                        <button onclick="showToast('CSV report exported successfully!')" class="w-full py-2 px-4 rounded-lg bg-white/80 hover:bg-white text-gray-700 text-sm font-medium transition-all border border-gray-200">
+                            Export as CSV
+                        </button>
+                        <button onclick="showToast('PDF report generated successfully!')" class="w-full py-2 px-4 rounded-lg bg-white/80 hover:bg-white text-gray-700 text-sm font-medium transition-all border border-gray-200">
+                            Export as PDF
+                        </button>
+                        <button class="btn-primary w-full py-2 px-4 rounded-lg text-white text-sm font-medium transition-all">
+                            Schedule Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Charts
+        function initCharts() {
+            // Sales Line Chart
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [12000, 19000, 15000, 25000, 22000, 30000, 24580],
+                        borderColor: '#a855f7',
+                        backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#d1d5db' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#d1d5db' }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+
+            // Category Bar Chart
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(categoryCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Electronics', 'Fashion', 'Home', 'Sports', 'Books'],
+                    datasets: [{
+                        data: [45000, 32000, 28000, 15000, 8000],
+                        backgroundColor: [
+                            'rgba(168, 85, 247, 0.8)',
+                            'rgba(139, 92, 246, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(245, 158, 11, 0.8)'
+                        ],
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#d1d5db' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#d1d5db' }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutBounce'
+                    }
+                }
+            });
+
+            // Payment Method Donut Chart
+            const paymentCtx = document.getElementById('paymentChart').getContext('2d');
+            new Chart(paymentCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['UPI', 'Card', 'COD', 'Wallet'],
+                    datasets: [{
+                        data: [45, 30, 15, 10],
+                        backgroundColor: [
+                            '#a855f7',
+                            '#3b82f6',
+                            '#10b981',
+                            '#f59e0b'
+                        ],
+                        borderWidth: 0,
+                        cutout: '70%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                color: '#d1d5db',
+                                usePointStyle: true
+                            }
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        duration: 2000
+                    }
+                }
+            });
+
+            // Sparklines
+            createSparkline('sparkline1', [10, 15, 12, 18, 20, 25, 24]);
+            createSparkline('sparkline2', [100, 120, 110, 140, 160, 180, 174]);
+        }
+
+        function createSparkline(canvasId, data) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map((_, i) => i),
+                    datasets: [{
+                        data: data,
+                        borderColor: '#ec4899',
+                        borderWidth: 2,
+                        fill: false,
+                        pointRadius: 0,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    },
+                    elements: { point: { radius: 0 } }
+                }
+            });
+        }
+
+        // Date Filter Function
+        function setDateFilter(period) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.date-filter').forEach(btn => {
+                btn.classList.remove('bg-pink-500', 'text-white');
+                btn.classList.add('bg-white/50', 'text-gray-700');
+            });
+            
+            // Add active class to clicked button
+            event.target.classList.remove('bg-white/50', 'text-gray-700');
+            event.target.classList.add('bg-pink-500', 'text-white');
+            
+            showToast(`Filter applied: ${period.toUpperCase()}`);
+        }
+
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            
+            // Add some loading animations
+            setTimeout(() => {
+                document.querySelectorAll('.glass-card').forEach((card, index) => {
+                    card.style.animationDelay = `${index * 0.1}s`;
+                    card.classList.add('animate-fade-in');
+                });
+            }, 100);
+        });
+
+        // Add hover effects to table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(4px)';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'985c3bdcc01d6ee9',t:'MTc1ODk4OTAzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
