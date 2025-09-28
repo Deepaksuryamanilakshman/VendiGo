@@ -51,7 +51,7 @@ function Dashboard({ user, cart, wishlist, orders, addToCart, addToWishlist }) {
     <div className="dashboard">
       {/* Hero Section */}
       <div className="hero-section">
-        <h1>Welcome back, {user.name.split(' ')[0]}! 👋</h1>
+        <h1 style={{color:"#fff"}}>Welcome back, {user.name.split(' ')[0]}! 👋</h1>
         <p>Manage your {user.businessType.toLowerCase()} inventory with ease</p>
         <div className="business-type-badge">{user.businessType}</div>
       </div>

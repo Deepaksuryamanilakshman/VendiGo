@@ -16,7 +16,7 @@ function Header({ user, cartItemsCount, wishlistItemsCount, notificationsCount }
   return (
     <header className="header">
       <div className="header-left">
-        <Link to="/dashboard" className="logo">
+        <Link to="/retailer/dashboard" className="logo">
           Qwipo B2B
         </Link>
       </div>
@@ -49,21 +49,21 @@ function Header({ user, cartItemsCount, wishlistItemsCount, notificationsCount }
           </div>
         </div>
         
-        <Link to="/wishlist" className="header-icon">
+        <Link to="/retailer/wishlist" className="header-icon">
           ❤️
           {wishlistItemsCount > 0 && (
             <span className="icon-badge">{wishlistItemsCount}</span>
           )}
         </Link>
         
-        <Link to="/cart" className="header-icon">
+        <Link to="/retailer/cart" className="header-icon">
           🛒
           {cartItemsCount > 0 && (
             <span className="icon-badge">{cartItemsCount}</span>
           )}
         </Link>
         
-        <Link to="/notifications" className="header-icon">
+        <Link to="/retailer/notifications" className="header-icon">
           🔔
           {notificationsCount > 0 && (
             <span className="icon-badge">{notificationsCount}</span>

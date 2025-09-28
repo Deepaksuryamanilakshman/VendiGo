@@ -13,15 +13,15 @@ import Rewards from './pages/Rewards';
 function RetailerRoutes() {
   return (
     <Routes>
-      <Route path="dashboard" element={<Dashboard />} />
-      <Route path="orders" element={<Orders />} />
-      <Route path="profile" element={<Profile />} />
-      <Route path="festival-packs" element={<FestivalPacks />} />
-      <Route path="search" element={<Search />} />
-      <Route path="cart" element={<Cart />} />
-      <Route path="wishlist" element={<Wishlist />} />
-      <Route path="notifications" element={<Notifications />} />
-      <Route path="rewards" element={<Rewards />} />
+      <Route path="/retailer/dashboard" element={<Dashboard />} />
+      <Route path="/retailer/orders" element={<Orders />} />
+      <Route path="/retailer/profile" element={<Profile />} />
+      <Route path="/retailer/festival-packs" element={<FestivalPacks />} />
+      <Route path="/retailer/search" element={<Search />} />
+      <Route path="/retailer/cart" element={<Cart />} />
+      <Route path="/retailer/wishlist" element={<Wishlist />} />
+      <Route path="/retailer/notifications" element={<Notifications />} />
+      <Route path="/retailer/rewards" element={<Rewards />} />
     </Routes>
   );
 }
