@@ -90,7 +90,7 @@ function Dashboard({ user, cart, wishlist, orders, addToCart, addToWishlist }) {
                   <span className="original-price">₹{festival.originalPrice}</span>
                   <span className="discount-badge">{festival.discount}% OFF</span>
                 </div>
-                <Link to="/festival-packs" className="btn btn-secondary">
+                <Link to="/retailer/festival-packs" className="btn btn-secondary">
                   View Festival Packs
                 </Link>
               </div>
@@ -103,19 +103,19 @@ function Dashboard({ user, cart, wishlist, orders, addToCart, addToWishlist }) {
       <div className="section">
         <h2 className="section-title">🚀 Quick Actions</h2>
         <div className="quick-actions-grid">
-          <Link to="/search" className="action-card">
+          <Link to="/retailer/search" className="action-card">
             <div className="action-icon">🔍</div>
             <div className="action-name">Search Products</div>
           </Link>
-          <Link to="/orders" className="action-card">
+          <Link to="/retailer/orders" className="action-card">
             <div className="action-icon">📋</div>
             <div className="action-name">My Orders</div>
           </Link>
-          <Link to="/cart" className="action-card">
+          <Link to="/retailer/cart" className="action-card">
             <div className="action-icon">🛒</div>
             <div className="action-name">View Cart ({cart.length})</div>
           </Link>
-          <Link to="/rewards" className="action-card">
+          <Link to="/retailer/rewards" className="action-card">
             <div className="action-icon">🎁</div>
             <div className="action-name">Rewards</div>
           </Link>
@@ -127,7 +127,7 @@ function Dashboard({ user, cart, wishlist, orders, addToCart, addToWishlist }) {
         <div className="section">
           <div className="section-header">
             <h2 className="section-title">📦 Recent Orders</h2>
-            <Link to="/orders" className="view-all-link">View All</Link>
+            <Link to="/retailer/orders" className="view-all-link">View All</Link>
           </div>
           <div className="recent-orders-grid">
             {recentOrders.map(order => (
@@ -178,7 +178,7 @@ function Dashboard({ user, cart, wishlist, orders, addToCart, addToWishlist }) {
                     Reorder
                   </button>
                   <Link 
-                    to={`/orders`}
+                    to={`/retailer/orders`}
                     className="btn btn-primary btn-small"
                   >
                     View Details
@@ -220,7 +220,7 @@ function Dashboard({ user, cart, wishlist, orders, addToCart, addToWishlist }) {
             return (
               <Link 
                 key={index}
-                to={`/search?category=${encodeURIComponent(category)}`}
+                to={`/retailer/search?category=${encodeURIComponent(category)}`}
                 className="category-card"
               >
                 <div className="category-icon">
@@ -253,7 +253,7 @@ function Dashboard({ user, cart, wishlist, orders, addToCart, addToWishlist }) {
           ))}
         </div>
         <div className="text-center mt-3">
-          <Link to="/search" className="btn btn-primary">
+          <Link to="/retailer/search" className="btn btn-primary">
             View All Products
           </Link>
         </div>

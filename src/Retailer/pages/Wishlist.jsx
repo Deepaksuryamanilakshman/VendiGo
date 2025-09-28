@@ -52,7 +52,7 @@ function Wishlist({ wishlist, removeFromWishlist, addToCart }) {
             <div className="empty-state-icon">❤️</div>
             <h2>Your wishlist is empty</h2>
             <p>Save products you love for later by adding them to your wishlist</p>
-            <Link to="/search" className="btn btn-primary">
+            <Link to="/retailer/search" className="btn btn-primary">
               Start Shopping
             </Link>
           </div>

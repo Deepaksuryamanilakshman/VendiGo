@@ -53,7 +53,7 @@ function Cart({ cart, updateQuantity, removeFromCart, placeOrder }) {
             <div className="empty-state-icon">🛒</div>
             <h2>Your cart is empty</h2>
             <p>Add some products to your cart to continue shopping</p>
-            <Link to="/search" className="btn btn-primary">
+            <Link to="/retailer/search" className="btn btn-primary">
               Start Shopping
             </Link>
           </div>
@@ -227,7 +227,7 @@ function Cart({ cart, updateQuantity, removeFromCart, placeOrder }) {
                 Proceed to Checkout
               </button>
               
-              <Link to="/search" className="btn btn-outline w-full">
+              <Link to="/retailer/search" className="btn btn-outline w-full">
                 Continue Shopping
               </Link>
             </div>
