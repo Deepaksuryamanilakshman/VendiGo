@@ -1,56 +1,92 @@
-/* Home.css */
 .home-container {
-  padding: 2rem 4rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9f9;
-  min-height: 80vh;
+  font-family: "Poppins", sans-serif;
   color: #333;
 }
 
-.home-container h1 {
-  font-size: 2.5rem;
-  color: #007bff;
-  margin-bottom: 1rem;
-  text-align: center;
+/* Hero Section */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 10%;
+  background: linear-gradient(90deg, #faf7f7 0%, #faf3f4 100%);
 }
 
-.home-container p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  text-align: center;
+.hero-text {
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-.home-container h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  color: #0056b3;
+.hero-text h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.hero-text h1 span {
+  color: #7b2ff7;
+}
+
+.hero-text p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.hero-text ul {
+  margin-bottom: 20px;
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.cta-btn {
+  background: #7b2ff7;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cta-btn:hover {
+  background: #5a1dcf;
+  transform: translateY(-2px);
+}
+
+.hero-image img {
+  width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Partners Section */
+.partners {
+  padding: 60px 10%;
   text-align: center;
+  background: #fff;
 }
 
-.categories-list {
+.partners h2 {
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+}
+
+.partner-logos {
   display: flex;
   justify-content: center;
+  gap: 40px;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
-.categories-list li {
-  background-color: white;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-  font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.partner-logos img {
+  max-height: 50px;
+  filter: grayscale(100%);
+  transition: all 0.3s;
 }
 
-.categories-list li:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+.partner-logos img:hover {
+  filter: grayscale(0%);
+  transform: scale(1.1);
 }
