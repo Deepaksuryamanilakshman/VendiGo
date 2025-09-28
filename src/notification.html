@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Notifications</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Animations */
+    .fade-in {
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    .slide-up {
+      animation: slideUp 0.5s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-pink-50 to-white min-h-screen fade-in">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+    <h1 class="text-2xl font-bold text-pink-600">🔔 Notifications</h1>
+    <a href="dashboard.html" 
+       class="text-sm text-gray-600 hover:text-pink-600 transition">⬅ Back to Dashboard</a>
+  </header>
+
+  <!-- Filters + Search -->
+  <div class="flex flex-col items-center mt-6 space-y-4 slide-up">
+
+    <!-- Filter Buttons -->
+    <div class="flex justify-center space-x-3 flex-wrap">
+      <button class="filter-btn bg-pink-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow hover:scale-105 transition" data-filter="all">All</button>
+      <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-300 transition" data-filter="unread">Unread</button>
+      <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-300 transition" data-filter="orders">Orders</button>
+      <button class="filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-300 transition" data-filter="system">System</button>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="w-full max-w-md">
+      <input type="text" id="searchBox" placeholder="🔍 Search notifications..."
+        class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-pink-400 focus:outline-none shadow-sm transition">
+    </div>
+  </div>
+
+  <!-- Notifications List -->
+  <main class="p-6 max-w-2xl mx-auto">
+    <ul id="notificationList" class="divide-y divide-gray-200 bg-white rounded-xl shadow-lg overflow-hidden">
+
+      <!-- Example Notifications -->
+      <li class="p-4 hover:bg-pink-50 cursor-pointer notification unread orders slide-up">
+        <p class="font-medium text-gray-800">🛒 New Order #125</p>
+        <span class="text-xs text-gray-500">5 mins ago</span>
+      </li>
+
+      <li class="p-4 hover:bg-pink-50 cursor-pointer notification unread orders slide-up">
+        <p class="font-medium text-gray-800">💰 Payment Received $250</p>
+        <span class="text-xs text-gray-500">10 mins ago</span>
+      </li>
+
+      <li class="p-4 hover:bg-pink-50 cursor-pointer notification orders slide-up">
+        <p class="font-medium text-gray-800">❌ Order #122 Cancelled</p>
+        <span class="text-xs text-gray-500">30 mins ago</span>
+      </li>
+
+      <li class="p-4 hover:bg-pink-50 cursor-pointer notification unread system slide-up">
+        <p class="font-medium text-gray-800">⚠ Low Stock Alert: Product A</p>
+        <span class="text-xs text-gray-500">1 hr ago</span>
+      </li>
+
+      <li class="p-4 hover:bg-pink-50 cursor-pointer notification system slide-up">
+        <p class="font-medium text-gray-800">✅ Supplier Document Approved</p>
+        <span class="text-xs text-gray-500">2 hrs ago</span>
+      </li>
+
+      <li class="p-4 hover:bg-pink-50 cursor-pointer notification system slide-up">
+        <p class="font-medium text-gray-800">🔧 System Update Scheduled</p>
+        <span class="text-xs text-gray-500">3 hrs ago</span>
+      </li>
+    </ul>
+  </main>
+
+  <!-- JS for Filters + Search -->
+  <script>
+    const filterBtns = document.querySelectorAll(".filter-btn");
+    const notifications = document.querySelectorAll(".notification");
+    const searchBox = document.getElementById("searchBox");
+
+    let activeFilter = "all";
+
+    // Apply filters
+    function applyFilters() {
+      const searchText = searchBox.value.toLowerCase();
+
+      notifications.forEach(note => {
+        const matchesFilter =
+          activeFilter === "all" || note.classList.contains(activeFilter);
+        const matchesSearch =
+          note.textContent.toLowerCase().includes(searchText);
+
+        if (matchesFilter && matchesSearch) {
+          note.style.display = "block";
+          note.classList.add("slide-up");
+        } else {
+          note.style.display = "none";
+        }
+      });
+    }
+
+    // Filter Button Click
+    filterBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeFilter = btn.dataset.filter;
+
+        // Button active styles
+        filterBtns.forEach(b => {
+          b.classList.remove("bg-pink-600", "text-white");
+          b.classList.add("bg-gray-200", "text-gray-700");
+        });
+        btn.classList.add("bg-pink-600", "text-white");
+        btn.classList.remove("bg-gray-200", "text-gray-700");
+
+        applyFilters();
+      });
+    });
+
+    // Search Input
+    searchBox.addEventListener("input", applyFilters);
+  </script>
+
+</body>
+</html>
