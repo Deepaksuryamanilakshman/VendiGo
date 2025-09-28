@@ -5,7 +5,7 @@ import './Navbar.css';
 function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">Qwipo</div>
+      <div className="logo">VendiGo</div>
       <div className="nav-links">
         <Link to="/">Home</Link>
         <Link to="/about">About Us</Link>

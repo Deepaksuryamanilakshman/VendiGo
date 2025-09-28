@@ -17,7 +17,7 @@ function Header({ user, cartItemsCount, wishlistItemsCount, notificationsCount }
     <header className="header">
       <div className="header-left">
         <Link to="/retailer/dashboard" className="logo">
-          Qwipo B2B
+          VendiGo B2B
         </Link>
       </div>
       

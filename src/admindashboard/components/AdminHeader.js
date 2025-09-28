@@ -26,7 +26,7 @@ function Header() {
     >
       {/* Left Section - Logo */}
       <div style={{ position:"fixed",fontSize: "20px", fontWeight: "bold", letterSpacing: "1px" ,left:"20px"}}>
-        Admin Dashboard
+        VendiGo Admin Dashboard
       </div>
 
       {/* Middle Section - Search Bar */}

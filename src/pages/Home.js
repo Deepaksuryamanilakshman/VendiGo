@@ -8,7 +8,7 @@ function Home() {
         <div className="hero-text">
           <h1>Empowering India’s <span>MSME Ecosystem</span></h1>
           <p>
-            Grow your business with Qwipo! Connect with retailers and sellers
+            Grow your business with VendiGo! Connect with retailers and sellers
             across India. Streamline your trade with logistics, secure payments,
             and a wide range of products from groceries to apparel, auto parts,
             and more.
@@ -17,7 +17,7 @@ function Home() {
             <li>Connect with businesses of all sizes across India</li>
             <li>Source products across diverse categories</li>
             <li>Leverage cost-effective credit and price transparency</li>
-            <li>Grow your sales with Qwipo's technology</li>
+            <li>Grow your sales with VendiGo's technology</li>
           </ul>
           <button className="cta-btn">Get Started!</button>
         </div>

@@ -4,7 +4,7 @@ import './Footer.css';
 function Footer() {
   return (
     <footer className="footer">
-      <p>&copy; 2025 Qwipo Clone. All rights reserved.</p>
+      <p>&copy; 2025 VendiGo Clone. All rights reserved.</p>
     </footer>
   );
 }
