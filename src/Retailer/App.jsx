@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Dashboard from './pages/Dashboard';
 import Search from './pages/Search';
@@ -118,114 +118,112 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="retailer-app">
-        <Header 
-          user={user}
-          cartItemsCount={cart.length}
-          wishlistItemsCount={wishlist.length}
-          notificationsCount={notifications.filter(n => !n.read).length}
+    <div className="retailer-app">
+      <Header 
+        user={user}
+        cartItemsCount={cart.length}
+        wishlistItemsCount={wishlist.length}
+        notificationsCount={notifications.filter(n => !n.read).length}
+      />
+      
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            <Dashboard 
+              user={user}
+              cart={cart}
+              wishlist={wishlist}
+              orders={orders}
+              addToCart={addToCart}
+              addToWishlist={addToWishlist}
+            />
+          } 
         />
-        
-        <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route 
-            path="/dashboard" 
-            element={
-              <Dashboard 
-                user={user}
-                cart={cart}
-                wishlist={wishlist}
-                orders={orders}
-                addToCart={addToCart}
-                addToWishlist={addToWishlist}
-              />
-            } 
-          />
-          <Route 
-            path="/search" 
-            element={
-              <Search 
-                addToCart={addToCart}
-                addToWishlist={addToWishlist}
-                cart={cart}
-                wishlist={wishlist}
-              />
-            } 
-          />
-          <Route 
-            path="/orders" 
-            element={
-              <Orders 
-                orders={orders}
-                addToCart={addToCart}
-              />
-            } 
-          />
-          <Route 
-            path="/cart" 
-            element={
-              <Cart 
-                cart={cart}
-                updateQuantity={updateCartQuantity}
-                removeFromCart={removeFromCart}
-                placeOrder={placeOrder}
-              />
-            } 
-          />
-          <Route 
-            path="/wishlist" 
-            element={
-              <Wishlist 
-                wishlist={wishlist}
-                removeFromWishlist={removeFromWishlist}
-                addToCart={addToCart}
-              />
-            } 
-          />
-          <Route 
-            path="/profile" 
-            element={
-              <Profile 
-                user={user}
-                setUser={setUser}
-                orders={orders}
-              />
-            } 
-          />
-          <Route 
-            path="/notifications" 
-            element={
-              <Notifications 
-                notifications={notifications}
-                setNotifications={setNotifications}
-              />
-            } 
-          />
-          <Route 
-            path="/rewards" 
-            element={
-              <Rewards 
-                user={user}
-                setUser={setUser}
-                orders={orders}
-              />
-            } 
-          />
-          <Route 
-            path="/festival-packs" 
-            element={
-              <FestivalPacks 
-                addToCart={addToCart}
-                addToWishlist={addToWishlist}
-                cart={cart}
-                wishlist={wishlist}
-              />
-            } 
-          />
-        </Routes>
-      </div>
-    </Router>
+        <Route 
+          path="/search" 
+          element={
+            <Search 
+              addToCart={addToCart}
+              addToWishlist={addToWishlist}
+              cart={cart}
+              wishlist={wishlist}
+            />
+          } 
+        />
+        <Route 
+          path="/orders" 
+          element={
+            <Orders 
+              orders={orders}
+              addToCart={addToCart}
+            />
+          } 
+        />
+        <Route 
+          path="/cart" 
+          element={
+            <Cart 
+              cart={cart}
+              updateQuantity={updateCartQuantity}
+              removeFromCart={removeFromCart}
+              placeOrder={placeOrder}
+            />
+          } 
+        />
+        <Route 
+          path="/wishlist" 
+          element={
+            <Wishlist 
+              wishlist={wishlist}
+              removeFromWishlist={removeFromWishlist}
+              addToCart={addToCart}
+            />
+          } 
+        />
+        <Route 
+          path="/profile" 
+          element={
+            <Profile 
+              user={user}
+              setUser={setUser}
+              orders={orders}
+            />
+          } 
+        />
+        <Route 
+          path="/notifications" 
+          element={
+            <Notifications 
+              notifications={notifications}
+              setNotifications={setNotifications}
+            />
+          } 
+        />
+        <Route 
+          path="/rewards" 
+          element={
+            <Rewards 
+              user={user}
+              setUser={setUser}
+              orders={orders}
+            />
+          } 
+        />
+        <Route 
+          path="/festival-packs" 
+          element={
+            <FestivalPacks 
+              addToCart={addToCart}
+              addToWishlist={addToWishlist}
+              cart={cart}
+              wishlist={wishlist}
+            />
+          } 
+        />
+      </Routes>
+    </div>
   );
 }
 

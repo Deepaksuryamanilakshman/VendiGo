@@ -1,5 +1,8 @@
+// App.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+
+// Public Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -8,9 +11,10 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
-import RetailerApp from './Retailer/App';
+import RetailerApp from "./Retailer/App";
 
-
+// Admin Components
+import Header from "./admindashboard/components/AdminHeader.js";
 import Dashboard from "./admindashboard/pages/Dashboard";
 import UserManagement from "./admindashboard/pages/UserManagement";
 import ProductManagement from "./admindashboard/pages/ProductManagement.js";
@@ -19,55 +23,60 @@ import Payments from "./admindashboard/pages/Payments.js";
 import ReportsAnalytics from "./admindashboard/pages/ReportsAnalytics.js";
 import ContentManagement from "./admindashboard/pages/ContentManagement.js";
 
-import Header from "./admindashboard/components/AdminHeader.js";
-
-function LayoutWrapper({ children }) {
-  const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin");
-  const isRetailer = location.pathname.startsWith("/retailer");
-
+// Layouts
+function PublicLayout() {
   return (
     <>
-      {/* Show Navbar only for non-admin pages */}
-      {!isAdminRoute && <Navbar />}
+      <Navbar />
+      <div style={{ minHeight: "80vh", padding: "0px" }}>
+        <Outlet />
+      </div>
+      <Footer />
+    </>
+  );
+}
 
-      {/* Show Admin Header only for admin pages */}
-      {isAdminRoute && <Header />}
-      
-      {isRetailer &&  <RetailerApp />}
-
-      <div style={{ minHeight: "80vh", padding: "0px" }}>{children}</div>
-
-      {/* Show Footer only for non-admin pages */}
-      {!isAdminRoute && <Footer />}
+function AdminLayout() {
+  return (
+    <>
+      <Header />
+      <div style={{ minHeight: "80vh", padding: "0px" }}>
+        <Outlet />
+      </div>
     </>
   );
 }
 
 function App() {
   return (
-    <Router>
-      <LayoutWrapper>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/privacy" element={<Privacy />} />
+<Router>
+  <Routes>
+    {/* Public Routes */}
+    <Route element={<PublicLayout />}>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/faq" element={<FAQ />} />
+      <Route path="/privacy" element={<Privacy />} />
+    </Route>
 
-          {/* Admin Dashboard Routes */}
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/users" element={<UserManagement />} />
-          <Route path="/admin/products" element={<ProductManagement />} />
-          <Route path="/admin/orders" element={<OrderManagement />} />
-          <Route path="/admin/payments" element={<Payments />} />
-          <Route path="/admin/reports" element={<ReportsAnalytics />} />
-          <Route path="/admin/content" element={<ContentManagement />} />
-        </Routes>
-      </LayoutWrapper>
-    </Router>
+    {/* Retailer Routes (no PublicLayout header/footer) */}
+    <Route path="/retailer/*" element={<RetailerApp />} />
+
+    {/* Admin Routes */}
+    <Route path="/admin" element={<AdminLayout />}>
+      <Route path="dashboard" element={<Dashboard />} />
+      <Route path="users" element={<UserManagement />} />
+      <Route path="products" element={<ProductManagement />} />
+      <Route path="orders" element={<OrderManagement />} />
+      <Route path="payments" element={<Payments />} />
+      <Route path="reports" element={<ReportsAnalytics />} />
+      <Route path="content" element={<ContentManagement />} />
+    </Route>
+  </Routes>
+</Router>
+
   );
 }
 

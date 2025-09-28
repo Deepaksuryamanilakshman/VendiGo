@@ -15,7 +15,7 @@ function Header() {
         display: "flex",
         justifyContent: "end",
         alignItems: "center",
-        padding: "12px 20px",
+        padding: "32px 20px",
         background: "linear-gradient(90deg, #fdf3f3, #f6dede, #f9f0f0, #f9d6da, #ffffff)", /* Added pinkish tone in middle */
         color: "#000000ff",
         position: "sticky",
