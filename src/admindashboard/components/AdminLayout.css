@@ -1,0 +1,50 @@
+/* AdminLayout.css */
+
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f6fa;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main area next to sidebar */
+.admin-main {
+  flex: 1;
+  margin-left: 250px; /* same width as sidebar */
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Content box */
+.admin-content {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  flex: 1;
+}
+
+/* Responsive sidebar adjustment */
+@media (max-width: 768px) {
+  .admin-main {
+    margin-left: 200px; /* match smaller sidebar width */
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-container {
+    flex-direction: column;
+  }
+
+  .admin-main {
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  .admin-content {
+    border-radius: 6px;
+    padding: 15px;
+  }
+}

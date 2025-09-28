@@ -4,9 +4,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: linear-gradient(90deg, #007bff, #0056b3);
-  color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(90deg, #fdf3f3, #f6dede, #f9f0f0, #f9d6da, #ffffff); /* Added pinkish tone in middle */
+  color: rgb(255, 255, 255);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -19,20 +18,22 @@
   letter-spacing: 1px;
   cursor: pointer;
   transition: transform 0.2s;
+  color: #000000; /* Pink shade for logo */
 }
 
 .logo:hover {
   transform: scale(1.05);
+  color: #ffd6eb; /* Lighter pink hover */
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 3rem;
 }
 
 .nav-links a {
-  color: white;
+  color: rgb(54, 54, 54);
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -46,7 +47,7 @@
   height: 2px;
   bottom: -3px;
   left: 0;
-  background-color: #ffdd57;
+  background-color: #645fff; /* Pink underline */
   transition: 0.3s;
 }
 
@@ -54,12 +55,9 @@
   width: 100%;
 }
 
-.nav-links a:hover {
-  color: #ffdd57;
-}
 
 @media (max-width: 768px) {
   .nav-links {
-    display: none; /* Later you can add a hamburger menu */
+    display: none; /* Later add a hamburger menu */
   }
 }

@@ -1,0 +1,20 @@
+.page-title { margin-bottom: 20px; color: #333; }
+.filters-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+.filters-bar input, .filters-bar select { padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; outline: none; min-width: 150px; }
+.table-wrapper { overflow-x: auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+.order-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.order-table th, .order-table td { padding: 12px 15px; text-align: left; }
+.order-table th { background-color: #1976d2; color: #fff; font-weight: 600; }
+.order-table tr:nth-child(even) { background-color: #f9f9f9; }
+.order-table tr:hover { background-color: #e3f2fd; }
+.status-badge { padding: 5px 10px; border-radius: 12px; color: rgb(0, 0, 0); font-weight: 500; font-size: 0.85rem; }
+.status-badge.pending { background-color: #ff9800; }
+.status-badge.delivered { background-color: #4caf50; }
+.status-badge.cancelled { background-color: #f44336; }
+.action-btn { padding: 5px 10px; margin-right: 5px; border: none; border-radius: 5px; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+.action-btn.approve { background-color: #4caf50; color: #fff; }
+.action-btn.cancel { background-color: #f44336; color: #fff; }
+.action-btn.delete { background-color: #e53935; color: #fff; }
+.pagination { margin-top: 20px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.page-btn { padding: 6px 12px; border: 1px solid #1976d2; border-radius: 6px; background-color: white; color: #1976d2; cursor: pointer; }
+.page-btn.active { background-color: #1976d2; color: white; }
