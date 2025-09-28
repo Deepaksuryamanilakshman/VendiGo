@@ -8,6 +8,8 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
+import RetailerApp from './Retailer/App';
+
 
 import Dashboard from "./admindashboard/pages/Dashboard";
 import UserManagement from "./admindashboard/pages/UserManagement";
@@ -22,6 +24,7 @@ import Header from "./admindashboard/components/AdminHeader.js";
 function LayoutWrapper({ children }) {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isRetailer = location.pathname.startsWith("/retailer");
 
   return (
     <>
@@ -30,6 +33,8 @@ function LayoutWrapper({ children }) {
 
       {/* Show Admin Header only for admin pages */}
       {isAdminRoute && <Header />}
+      
+      {isRetailer &&  <RetailerApp />}
 
       <div style={{ minHeight: "80vh", padding: "0px" }}>{children}</div>
 
